@@ -20,7 +20,7 @@ namespace Redbus.Interfaces
         /// Unsubscribe from the Event type related to the specified <see cref="SubscriptionToken"/>
         /// </summary>
         /// <param name="token">The <see cref="SubscriptionToken"/> received from calling the Subscribe method</param>
-        void Unsubscribe(SubscriptionToken token);
+        void Unsubscribe(Action<EventBase> token);
 
         /// <summary>
         /// Publishes the specified event to any subscribers for the <see cref="TEventBase"/> event type

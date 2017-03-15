@@ -1,4 +1,5 @@
-﻿using Redbus.Events;
+﻿using System;
+using Redbus.Events;
 
 namespace Redbus.Interfaces
 {
@@ -7,7 +8,7 @@ namespace Redbus.Interfaces
         /// <summary>
         /// Token returned to the subscriber
         /// </summary>
-        SubscriptionToken SubscriptionToken { get; }
+        Action<EventBase> SubscriptionToken { get; }
 
         /// <summary>
         /// Publish to the subscriber

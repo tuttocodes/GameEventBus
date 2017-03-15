@@ -21,9 +21,9 @@ namespace Redbus.Extensions
             eventBus.PublishAsync(eventBase, asyncCallback);
         }
 
-        public static void Unsubscribe(this SubscriptionToken token, IEventBus eventBus)
-        {
-            eventBus.Unsubscribe(token);
-        }
+//        public static void Unsubscribe(this Action<EventBase> token, IEventBus eventBus)
+//        {
+//            eventBus.Unsubscribe(token);
+//        }
     }
 }

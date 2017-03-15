@@ -11,9 +11,14 @@ namespace Redbus
     /// </summary>
     public class EventBus : IEventBus
     {
+        private readonly Dictionary<Type, List<ISubscription>> _subscriptions;
+        private readonly Dictionary<object, Type> typeMap; 
+        private static readonly object SubscriptionsLock = new object();
+
         public EventBus()
         {
             _subscriptions = new Dictionary<Type, List<ISubscription>>();
+            typeMap = new Dictionary<object, Type>();
         }
 
         /// <summary>
@@ -33,6 +38,7 @@ namespace Redbus
                     _subscriptions.Add(typeof(TEventBase), new List<ISubscription>());
 
                 var token = new SubscriptionToken(typeof(TEventBase));
+                typeMap.Add(action, typeof(TEventBase));
                 _subscriptions[typeof(TEventBase)].Add(new Subscription<TEventBase>(action, token));
                 return token;
             }
@@ -42,19 +48,20 @@ namespace Redbus
         /// Unsubscribe from the Event type related to the specified <see cref="SubscriptionToken"/>
         /// </summary>
         /// <param name="token">The <see cref="SubscriptionToken"/> received from calling the Subscribe method</param>
-        public void Unsubscribe(SubscriptionToken token)
+        public void Unsubscribe(Action<EventBase> action)
         {
-            if (token == null)
-                throw new ArgumentNullException("token");
+            if (action == null)
+                throw new ArgumentNullException("action");
 
             lock (SubscriptionsLock)
             {
-                if (_subscriptions.ContainsKey(token.EventItemType))
+                Type type = typeMap[action];
+                if (_subscriptions.ContainsKey(type))
                 {
-                    var allSubscriptions = _subscriptions[token.EventItemType];
-                    var subscriptionToRemove = allSubscriptions.FirstOrDefault(x => x.SubscriptionToken.Token == token.Token);
+                    var allSubscriptions = _subscriptions[type];
+                    var subscriptionToRemove = allSubscriptions.FirstOrDefault(x => x.SubscriptionToken == action);
                     if (subscriptionToRemove != null)
-                        _subscriptions[token.EventItemType].Remove(subscriptionToRemove);
+                        _subscriptions[type].Remove(subscriptionToRemove);
                 }
             }
         }
@@ -121,8 +128,5 @@ namespace Redbus
         }
 
         #endregion
-
-        private readonly Dictionary<Type, List<ISubscription>> _subscriptions;
-        private static readonly object SubscriptionsLock = new object();
     }
 }
