@@ -79,6 +79,28 @@ namespace EventsTest {
         }
 
         [TestMethod]
+        public void UnSubInActionDelegate()
+        {
+            EventBus bus = new EventBus();
+
+            Action<CustomEvent1> action1 = (event1) => {
+                Assert.IsTrue(false); // should reach here
+            };
+            bus.Subscribe<CustomEvent1>(action1);
+
+
+            Action<CustomEvent2> action2 = (event1) => {
+                bus.Unsubscribe(action1);
+            };
+            bus.Subscribe<CustomEvent2>(action2);
+
+            bus.Publish(new CustomEvent2());
+            bus.Publish(new CustomEvent1());
+
+            Assert.IsTrue(true); // should make it here without invoking action1
+        }
+
+        [TestMethod]
         public void CsharpSanityTest()
         {
             EventBus bus = new EventBus();
