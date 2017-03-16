@@ -6,8 +6,10 @@ using GameEventBus.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EventsTest {
+
     [TestClass]
     public class UnitTest1 {
+
         [TestMethod]
         public void TestMethod1() {
             EventBus bus = new EventBus();
@@ -25,8 +27,8 @@ namespace EventsTest {
             bus.Publish(new CustomEvent1());
             Debug.WriteLine("published custom event 1");
             Assert.IsTrue(true);
-
         }
+
         [TestMethod]
         public void TestEventOrder() 
         {
@@ -38,15 +40,20 @@ namespace EventsTest {
                 results.Add(0);
             });
 
-            bus.Subscribe<CustomEvent1>(event1 => {
+            Action<CustomEvent1> action1 = (event1) => {
                 results.Add(1);
-            });
-            bus.Subscribe<CustomEvent2>(event1 => {
+            };
+            bus.Subscribe<CustomEvent1>(action1);
+
+            Action<CustomEvent2> action2 = (event1) => {
                 results.Add(2);
-            });
-            bus.Subscribe<CustomEvent3>(event1 => {
+            };
+            bus.Subscribe<CustomEvent2>(action2);
+
+            Action<CustomEvent3> action3 = (event1) => {
                 results.Add(3);
-            });
+            };
+            bus.Subscribe<CustomEvent3>(action3);
 
             bus.Publish(new CustomEvent1());
             bus.Publish(new CustomEvent1());
@@ -59,6 +66,16 @@ namespace EventsTest {
             Assert.AreEqual(3, results[2]);
             Assert.AreEqual(2, results[3]);
             Assert.AreEqual(2, results[4]);
+
+            bus.Unsubscribe(action1);
+            bus.Publish(new CustomEvent1());
+            bus.Publish(new CustomEvent1()); // these do not get added
+            
+            Assert.AreEqual(5, results.Count);
+
+            bus.UnSubscribe(action3);
+            bus.Publish(new CustomEvent2());
+            Assert.AreEqual(2, results[5]);
         }
 
         [TestMethod]
@@ -78,6 +95,7 @@ namespace EventsTest {
             Assert.AreEqual(1, i);
         }
     }
+
 
     class CustomEvent1 : EventBase {
 
