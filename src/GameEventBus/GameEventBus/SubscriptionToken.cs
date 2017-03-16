@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Redbus
+namespace GameEventBus
 {
     /// <summary>
     /// A Token representing a Subscription

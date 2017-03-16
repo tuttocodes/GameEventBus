@@ -47,3 +47,5 @@ Temporary Items
 .apdisk
 src/Redbus/Redbus/obj/Debug/
 src/Redbus/EventsTest/obj/Debug/
+src/GameEventBus/EventsTest/obj/Debug/
+src/GameEventBus/GameEventBus/obj/Debug/

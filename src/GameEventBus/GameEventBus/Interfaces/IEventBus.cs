@@ -1,7 +1,7 @@
 ﻿using System;
-using Redbus.Events;
+using GameEventBus.Events;
 
-namespace Redbus.Interfaces
+namespace GameEventBus.Interfaces
 {
     /// <summary>
     /// Defines an interface to subscribe and publish events
@@ -14,7 +14,7 @@ namespace Redbus.Interfaces
         /// <typeparam name="TEventBase">The type of event</typeparam>
         /// <param name="action">The Action to invoke when an event of this type is published</param>
         /// <returns>A <see cref="SubscriptionToken"/> to be used when calling <see cref="Unsubscribe"/></returns>
-        SubscriptionToken Subscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventBase;
+        void Subscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventBase;
 
         /// <summary>
         /// Unsubscribe from the Event type related to the specified <see cref="SubscriptionToken"/>

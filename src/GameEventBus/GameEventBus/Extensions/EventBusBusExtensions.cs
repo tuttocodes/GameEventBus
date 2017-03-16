@@ -1,10 +1,10 @@
 ﻿using System;
-using Redbus.Events;
-using Redbus.Interfaces;
+using GameEventBus.Events;
+using GameEventBus.Interfaces;
 
-namespace Redbus.Extensions
+namespace GameEventBus.Extensions
 {
-    public static class RedBusExtensions
+    public static class EventBusBusExtensions
     {
         public static void Publish(this EventBase eventBase, IEventBus eventBus)
         {

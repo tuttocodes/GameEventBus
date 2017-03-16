@@ -1,4 +1,4 @@
-﻿namespace Redbus.Events
+﻿namespace GameEventBus.Events
 {
     /// <summary>
     /// Generic event with payload

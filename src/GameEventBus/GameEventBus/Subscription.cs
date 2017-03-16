@@ -1,20 +1,17 @@
 ﻿using System;
-using Redbus.Events;
-using Redbus.Interfaces;
+using GameEventBus.Events;
+using GameEventBus.Interfaces;
 
-namespace Redbus
+namespace GameEventBus
 {
     internal class Subscription<TEventBase> : ISubscription where TEventBase : EventBase
     {
         public Action<EventBase> SubscriptionToken { get { return (Action<EventBase>) _action; } }
 
-        public Subscription(Action<TEventBase> action, SubscriptionToken token)
+        public Subscription(Action<TEventBase> action)
         {
             if(action == null)
                 throw new ArgumentNullException("action");
-
-            if(token == null)
-                throw new ArgumentNullException("token");
 
             _action = action;
 //            _subscriptionToken = token;

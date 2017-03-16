@@ -1,7 +1,7 @@
 ﻿using System;
-using Redbus.Events;
+using GameEventBus.Events;
 
-namespace Redbus.Interfaces
+namespace GameEventBus.Interfaces
 {
     public interface ISubscription
     {

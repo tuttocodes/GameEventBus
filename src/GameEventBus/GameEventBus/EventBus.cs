@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Redbus.Events;
-using Redbus.Interfaces;
+using GameEventBus.Events;
+using GameEventBus.Interfaces;
 
-namespace Redbus
+namespace GameEventBus
 {
     /// <summary>
     /// Implements <see cref="IEventBus"/>.
@@ -27,7 +27,7 @@ namespace Redbus
         /// <typeparam name="TEventBase">The type of event</typeparam>
         /// <param name="action">The Action to invoke when an event of this type is published</param>
         /// <returns>A <see cref="SubscriptionToken"/> to be used when calling <see cref="Unsubscribe"/></returns>
-        public SubscriptionToken Subscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventBase
+        public void Subscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventBase
         {
             if (action == null)
                 throw new ArgumentNullException("action");
@@ -37,10 +37,8 @@ namespace Redbus
                 if (!_subscriptions.ContainsKey(typeof(TEventBase)))
                     _subscriptions.Add(typeof(TEventBase), new List<ISubscription>());
 
-                var token = new SubscriptionToken(typeof(TEventBase));
                 typeMap.Add(action, typeof(TEventBase));
-                _subscriptions[typeof(TEventBase)].Add(new Subscription<TEventBase>(action, token));
-                return token;
+                _subscriptions[typeof(TEventBase)].Add(new Subscription<TEventBase>(action));
             }
         }
 
