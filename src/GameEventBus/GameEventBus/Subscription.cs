@@ -4,7 +4,7 @@ using GameEventBus.Interfaces;
 
 namespace GameEventBus
 {
-    internal class Subscription<TEventBase> : ISubscription where TEventBase : EventBase
+    internal class Subscription<TEventBase> : ISubscription<TEventBase> 
     {
         public object SubscriptionToken { get { return _action; } }
 
@@ -18,12 +18,12 @@ namespace GameEventBus
         }
 
 
-        public void Publish(EventBase eventItem)
+        public void Publish(TEventBase eventItem)
         {
             if (!(eventItem is TEventBase))
                 throw new ArgumentException("Event Item is not the correct type.");
 
-            _action.Invoke(eventItem as TEventBase);
+            _action.Invoke(eventItem);
         }
 
         private readonly Action<TEventBase> _action;

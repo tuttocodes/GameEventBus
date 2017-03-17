@@ -9,15 +9,15 @@ namespace GameEventBus
     /// <summary>
     /// Implements <see cref="IEventBus"/>.
     /// </summary>
-    public class EventBus : IEventBus
+    public class EventBus<EventClass> : IEventBus<EventClass>
     {
-        private readonly Dictionary<Type, List<ISubscription>> _subscriptions;
+        private readonly Dictionary<Type, List<ISubscription<EventClass>>> _subscriptions;
         private readonly Dictionary<object, Type> typeMap; 
         private static readonly object SubscriptionsLock = new object();
 
         public EventBus()
         {
-            _subscriptions = new Dictionary<Type, List<ISubscription>>();
+            _subscriptions = new Dictionary<Type, List<ISubscription<EventClass>>>();
             typeMap = new Dictionary<object, Type>();
         }
 
@@ -27,7 +27,7 @@ namespace GameEventBus
         /// <typeparam name="TEventBase">The type of event</typeparam>
         /// <param name="action">The Action to invoke when an event of this type is published</param>
         /// <returns>A <see cref="SubscriptionToken"/> to be used when calling <see cref="Unsubscribe"/></returns>
-        public void Subscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventBase
+        public void Subscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventClass
         {
             if (action == null)
                 throw new ArgumentNullException("action");
@@ -35,7 +35,7 @@ namespace GameEventBus
             lock (SubscriptionsLock)
             {
                 if (!_subscriptions.ContainsKey(typeof(TEventBase)))
-                    _subscriptions.Add(typeof(TEventBase), new List<ISubscription>());
+                    _subscriptions.Add(typeof(TEventBase), new List<ISubscription<EventClass>>());
 
                 typeMap.Add(action, typeof(TEventBase));
                 _subscriptions[typeof(TEventBase)].Add(new Subscription<TEventBase>(action));
@@ -46,7 +46,7 @@ namespace GameEventBus
         /// Unsubscribe from the Event type related to the specified <see cref="SubscriptionToken"/>
         /// </summary>
         /// <param name="token">The <see cref="SubscriptionToken"/> received from calling the Subscribe method</param>
-        public void Unsubscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventBase
+        public void Unsubscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventClass
         {
             if (action == null)
                 throw new ArgumentNullException("action");
@@ -69,12 +69,12 @@ namespace GameEventBus
         /// </summary>
         /// <typeparam name="TEventBase">The type of event</typeparam>
         /// <param name="eventItem">Event to publish</param>
-        public void Publish<TEventBase>(TEventBase eventItem) where TEventBase : EventBase
+        public void Publish<TEventBase>(TEventBase eventItem) where TEventBase : EventClass
         {
             if (eventItem == null)
                 throw new ArgumentNullException("eventItem");
 
-            List<ISubscription> allSubscriptions = new List<ISubscription>();
+            List<ISubscription<EventClass>> allSubscriptions = new List<ISubscription<EventClass>>();
             lock (SubscriptionsLock)
             {
                 if (_subscriptions.ContainsKey(typeof(TEventBase)))
@@ -93,38 +93,5 @@ namespace GameEventBus
                 }
             }
         }
-
-        /// <summary>
-        /// Publishes the specified event to any subscribers for the <see cref="TEventBase"/> event type asychronously
-        /// </summary>
-        /// <remarks> This is a wrapper call around the synchronous  method as this method is naturally synchronous (CPU Bound) </remarks>
-        /// <typeparam name="TEventBase">The type of event</typeparam>
-        /// <param name="eventItem">Event to publish</param>
-        public void PublishAsync<TEventBase>(TEventBase eventItem) where TEventBase : EventBase
-        {
-            PublishAsyncInternal(eventItem, null);
-        }
-
-        /// <summary>
-        /// Publishes the specified event to any subscribers for the <see cref="TEventBase"/> event type asychronously
-        /// </summary>
-        /// <remarks> This is a wrapper call around the synchronous  method as this method is naturally synchronous (CPU Bound) </remarks>
-        /// <typeparam name="TEventBase">The type of event</typeparam>
-        /// <param name="eventItem">Event to publish</param>
-        /// <param name="callback"><see cref="AsyncCallback"/> that is called on completion</param>
-        public void PublishAsync<TEventBase>(TEventBase eventItem, AsyncCallback callback) where TEventBase : EventBase
-        {
-            PublishAsyncInternal(eventItem, callback);
-        }
-
-        #region PRIVATE METHODS
-
-        private void PublishAsyncInternal<TEventBase>(TEventBase eventItem, AsyncCallback callback) where TEventBase : EventBase
-        {
-            Action publishAction = () => Publish(eventItem);
-            publishAction.BeginInvoke(callback, null);
-        }
-
-        #endregion
     }
 }

@@ -3,7 +3,7 @@ using GameEventBus.Events;
 
 namespace GameEventBus.Interfaces
 {
-    public interface ISubscription
+    public interface ISubscription<EventClass>
     {
         /// <summary>
         /// Token returned to the subscriber
@@ -14,6 +14,6 @@ namespace GameEventBus.Interfaces
         /// Publish to the subscriber
         /// </summary>
         /// <param name="eventBase"></param>
-        void Publish(EventBase eventBase);
+        void Publish(EventClass eventBase);
     }
 }
