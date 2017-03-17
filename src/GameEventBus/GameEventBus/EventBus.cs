@@ -46,7 +46,7 @@ namespace GameEventBus
         /// Unsubscribe from the Event type related to the specified <see cref="SubscriptionToken"/>
         /// </summary>
         /// <param name="token">The <see cref="SubscriptionToken"/> received from calling the Subscribe method</param>
-        public void Unsubscribe(Action<EventBase> action)
+        public void Unsubscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventBase
         {
             if (action == null)
                 throw new ArgumentNullException("action");

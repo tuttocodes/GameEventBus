@@ -6,7 +6,7 @@ namespace GameEventBus
 {
     internal class Subscription<TEventBase> : ISubscription where TEventBase : EventBase
     {
-        public Action<EventBase> SubscriptionToken { get { return (Action<EventBase>) _action; } }
+        public object SubscriptionToken { get { return _action; } }
 
         public Subscription(Action<TEventBase> action)
         {

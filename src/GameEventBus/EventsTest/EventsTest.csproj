@@ -54,8 +54,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Redbus\GameEventBus.csproj">
-      <Project>{80768212-79B9-45D7-84B4-B4CD8524F470}</Project>
+    <ProjectReference Include="..\GameEventBus\GameEventBus.csproj">
+      <Project>{80768212-79b9-45d7-84b4-b4cd8524f470}</Project>
       <Name>GameEventBus</Name>
     </ProjectReference>
   </ItemGroup>

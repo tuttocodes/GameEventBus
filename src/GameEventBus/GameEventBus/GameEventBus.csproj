@@ -39,10 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameEventBus.cs" />
+    <Compile Include="EventBus.cs" />
     <Compile Include="Events\EventBase.cs" />
-    <Compile Include="Events\PayloadEvent.cs" />
-    <Compile Include="Extensions\RedBusExtensions.cs" />
+    <Compile Include="Extensions\EventBusBusExtensions.cs" />
     <Compile Include="Interfaces\IEventBus.cs" />
     <Compile Include="Interfaces\ISubscription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

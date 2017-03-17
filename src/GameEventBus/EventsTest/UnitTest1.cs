@@ -73,7 +73,7 @@ namespace EventsTest {
             
             Assert.AreEqual(5, results.Count);
 
-            bus.UnSubscribe(action3);
+            bus.Unsubscribe(action3);
             bus.Publish(new CustomEvent2());
             Assert.AreEqual(2, results[5]);
         }

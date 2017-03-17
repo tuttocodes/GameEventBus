@@ -8,7 +8,7 @@ namespace GameEventBus.Interfaces
         /// <summary>
         /// Token returned to the subscriber
         /// </summary>
-        Action<EventBase> SubscriptionToken { get; }
+        object SubscriptionToken { get; }
 
         /// <summary>
         /// Publish to the subscriber
