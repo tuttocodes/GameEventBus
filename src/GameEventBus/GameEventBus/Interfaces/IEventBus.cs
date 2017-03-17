@@ -47,4 +47,46 @@ namespace GameEventBus.Interfaces
         /// <param name="callback"><see cref="AsyncCallback"/> that is called on completion</param>
         void PublishAsync<TEventBase>(TEventBase eventItem, AsyncCallback callback) where TEventBase : EventBase;
     }
+
+    public interface IEventBus<EventClass>
+    {
+        /// <summary>
+        /// Subscribes to the specified event type with the specified action
+        /// </summary>
+        /// <typeparam name="TEventBase">The type of event</typeparam>
+        /// <param name="action">The Action to invoke when an event of this type is published</param>
+        /// <returns>A <see cref="SubscriptionToken"/> to be used when calling <see cref="Unsubscribe"/></returns>
+        void Subscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventClass;
+
+        /// <summary>
+        /// Unsubscribe from the Event type related to the specified <see cref="SubscriptionToken"/>
+        /// </summary>
+        /// <param name="token">The <see cref="SubscriptionToken"/> received from calling the Subscribe method</param>
+        void Unsubscribe<TEventBase>(Action<TEventBase> token) where TEventBase : EventClass;
+
+        /// <summary>
+        /// Publishes the specified event to any subscribers for the <see cref="TEventBase"/> event type
+        /// </summary>
+        /// <typeparam name="TEventBase">The type of event</typeparam>
+        /// <param name="eventItem">Event to publish</param>
+        void Publish<TEventBase>(TEventBase eventItem) where TEventBase : EventClass;
+
+        /// <summary>
+        /// Publishes the specified event to any subscribers for the <see cref="TEventBase"/> event type asychronously
+        /// </summary>
+        /// <remarks> This is a wrapper call around the synchronous  method as this method is naturally synchronous (CPU Bound) </remarks>
+        /// <typeparam name="TEventBase">The type of event</typeparam>
+        /// <param name="eventItem">Event to publish</param>
+        void PublishAsync<TEventBase>(TEventBase eventItem) where TEventBase : EventClass;
+
+        /// <summary>
+        /// Publishes the specified event to any subscribers for the <see cref="TEventBase"/> event type asychronously
+        /// and 
+        /// </summary>
+        /// <remarks> This is a wrapper call around the synchronous  method as this method is naturally synchronous (CPU Bound) </remarks>
+        /// <typeparam name="TEventBase">The type of event</typeparam>
+        /// <param name="eventItem">Event to publish</param>
+        /// <param name="callback"><see cref="AsyncCallback"/> that is called on completion</param>
+        void PublishAsync<TEventBase>(TEventBase eventItem, AsyncCallback callback) where TEventBase : EventClass;
+    }
 }
