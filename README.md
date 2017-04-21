@@ -16,7 +16,7 @@ class PlayerJumpEvent : EventBase {
 
 private void TestMethod() {
   IEventBus eventBus = new EventBus();
-  eventBus.Subscribe<PlayerMoveEvent>(OnPlayerJump); 
+  eventBus.Subscribe<PlayerJumpEvent>(OnPlayerJump); 
    
   eventBus.Publish(new PlayerJumpEvent(new Vector3(1,1,0)));// OnPlayerJump will be invoked
 
