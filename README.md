@@ -6,29 +6,25 @@ A simple EventBus library in C# for Unity
 ```c#
 
 // Create a unique class for each type of event
-class PlayerMoveEvent : EventBase
-{
-  public Vector3 newPosition;
+class PlayerJumpEvent : EventBase {
+  public Vector3 jumpPosition;
 
-  public PlayerMoveEvent(Vector3 pos)
-  {
-    newPosition = pos;
+  public PlayerMoveEvent(Vector3 pos) {
+    jumpPosition = pos;
   }
 }
 
-private void TestMethod()
-{
+private void TestMethod() {
   IEventBus eventBus = new EventBus();
-  eventBus.Subscribe<PlayerMoveEvent>(OnPlayerMove); 
+  eventBus.Subscribe<PlayerMoveEvent>(OnPlayerJump); 
    
-  eventBus.Publish(new PlayerMoveEvent(new Vector3(1,1,0)));// OnPlayerMove will be invoked
+  eventBus.Publish(new PlayerJumpEvent(new Vector3(1,1,0)));// OnPlayerJump will be invoked
 
-  eventBus.Unsubscribe(OnPlayerMove);
+  eventBus.Unsubscribe(OnPlayerJump);
 }
 
-private void OnPlayerMove(PlayerMoveEvent playerMoveEvent)
-{
-  Console.WriteLine(playerMoveEvent.newPosition);
+private void OnPlayerJump(PlayerJumpEvent event) {
+  Console.WriteLine(playerJumpEvent.newPosition);
 }
 
 ```
@@ -43,8 +39,7 @@ First, we can create a global instance of our EventBus in a global GameControlle
 ```csharp
 using GameEventBus;
 
-public class GameController : MonoBehaviour
-{
+public class GameController : MonoBehaviour {
   public static EventBus Bus = new EventBus();
 }
 ```
@@ -54,24 +49,19 @@ When your Player collides with a bullet, you can publish a BulletCollision event
 
 ```csharp
 
-public class Player : Monobehaviour
-{
-    void OnCollisionEnter(Collision collision) 
-    {
-        if(collision.gameObject.tag == "bullet")
-        {
-          GameController.Bus.Publish<BulletCollision>(new BulletCollision(collision));
-        }
+public class Player : Monobehaviour {
+  void OnCollisionEnter(Collision collision) {
+    if(collision.gameObject.tag == "bullet") {
+      GameController.Bus.Publish<BulletCollision>(new BulletCollision(collision));
     }
+  }
 }
 using GameEventBus.Events;
 
-public class BulletCollision : EventBase
-{
+public class BulletCollisionEvent : EventBase {
   public Collision collision;
 
-  public BulletCollision(Collision collision)
-  {
+  public BulletCollisionEvent(Collision collision) {
     this.collision = collision;
   }
 }
@@ -82,20 +72,16 @@ a Bullet
 
 ```csharp
 
-public class Hud : Monobehaviour
-{
-  void Start()
-  {
+public class Hud : Monobehaviour {
+  void Start() {
     GameController.Bus.Subscribe<BulletCollision>(OnBulletCollision);
   }
 
-  void OnBulletCollision(BulletCollision bulletColllision)
-  {
+  void OnBulletCollision(BulletCollisionEvent even) {
     Debug.Log("Our HUD was notified of a bullet collision!")
   }
 
-  void OnDestroy()
-  {
+  void OnDestroy() {
     GameController.Bus.UnSubscribe(OnBulletCollision);
   }
 }
