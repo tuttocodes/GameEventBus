@@ -79,7 +79,7 @@ public class Hud : Monobehaviour {
     GameController.Bus.Subscribe<BulletCollision>(OnBulletCollision);
   }
 
-  void OnBulletCollision(BulletCollisionEvent even) {
+  void OnBulletCollision(BulletCollisionEvent event) {
     Debug.Log("Our HUD was notified of a bullet collision!")
   }
 
