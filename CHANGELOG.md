@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/tuttocodes/GameEventBus/compare/v1.0.0...v1.0.1) (2021-01-17)
+
+
+### Bug Fixes
+
+* **package.json:** moved commitizen dependency to devDependencies ([c40c0e6](https://github.com/tuttocodes/GameEventBus/commit/c40c0e6b669aaff088593e2d7ad4702c0d733e66))
+
 # 1.0.0 (2021-01-17)
 
 
