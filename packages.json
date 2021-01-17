@@ -14,5 +14,15 @@
   "author": {
     "name": "TuttoCodes",
     "email": "gpiffaretti@gmail.com"
-  }
+  },
+  "private": true,
+  "files": [
+    "./Editor",
+    "./Runtime",
+    "./Documentation~",
+    "./Samples~",
+    "README.md",
+    "CHANGELOG.md",
+    "packages.json"
+  ]
 }
