@@ -1,0 +1,48 @@
+{
+  "name": "com.tuttocodes.gameeventbus",
+  "version": "1.0.0",
+  "displayName": "GameEventBus",
+  "description": "C# event bus for Unity3D.",
+  "unity": "2019.1",
+  "unityRelease": "0b5",
+  "keywords": [
+    "Unity",
+    "EventBus"
+  ],
+  "author": {
+    "name": "TuttoCodes",
+    "email": "gpiffaretti@gmail.com"
+  },
+  "private": true,
+  "files": [
+    "./Editor",
+    "./Runtime",
+    "./Documentation~",
+    "./Samples~",
+    "README.md",
+    "CHANGELOG.md",
+    "packages.json"
+  ],
+  "dependencies": {
+    "commitizen": "4.2.3"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "11.0.0",
+    "@commitlint/config-conventional": "11.0.0",
+    "cz-conventional-changelog": "3.2.0",
+    "husky": "4.3.8"
+  },
+  "optionalDependencies": {
+    "commitizen": "4.2.3"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
