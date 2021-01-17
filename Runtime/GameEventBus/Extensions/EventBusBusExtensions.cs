@@ -1,8 +1,8 @@
 ﻿using System;
-using GameEventBus.Events;
-using GameEventBus.Interfaces;
+using TC.GameEventBus.Events;
+using TC.GameEventBus.Interfaces;
 
-namespace GameEventBus.Extensions
+namespace TC.GameEventBus.Extensions
 {
     public static class EventBusBusExtensions
     {

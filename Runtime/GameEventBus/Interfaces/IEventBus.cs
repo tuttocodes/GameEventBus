@@ -1,7 +1,7 @@
 ﻿using System;
-using GameEventBus.Events;
+using TC.GameEventBus.Events;
 
-namespace GameEventBus.Interfaces
+namespace TC.GameEventBus.Interfaces
 {
     // /// <summary>
     // /// Defines an interface to subscribe and publish events

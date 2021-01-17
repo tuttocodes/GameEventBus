@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameEventBus.Events;
-using GameEventBus.Interfaces;
+using TC.GameEventBus.Events;
+using TC.GameEventBus.Interfaces;
 
-namespace GameEventBus
+namespace TC.GameEventBus
 {
     /// <summary>
     /// Implements <see cref="IEventBus"/>.
