@@ -1,0 +1,31 @@
+name: Test and release
+
+# Run the workflow when a Pull Request is opened or when changes are pushed to master
+on:
+ pull_request:
+ push:
+  branches: [ master ]
+
+jobs:
+
+ release:
+  # Only release on push to master
+  if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+  runs-on: ubuntu-latest
+  steps:
+  - name: Checkout
+    uses: actions/checkout@v2
+
+  - name: Setup Node.js
+    uses: actions/setup-node@v1
+    with:
+     node-version: 15.x
+
+  - name: Install
+    run: npm ci
+
+  - name: Release
+    run: npx semantic-release
+    env:
+     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
