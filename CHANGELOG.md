@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/tuttocodes/GameEventBus/compare/v1.0.1...v1.0.2) (2021-01-17)
+
+
+### Bug Fixes
+
+* **package.json:** fixed include directories for npm pack ([a451588](https://github.com/tuttocodes/GameEventBus/commit/a451588f6dfe03a872aef324f93f49079cdbcf4c))
+
 ## [1.0.1](https://github.com/tuttocodes/GameEventBus/compare/v1.0.0...v1.0.1) (2021-01-17)
 
 
