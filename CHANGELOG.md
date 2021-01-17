@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/tuttocodes/GameEventBus/compare/v1.0.2...v1.0.3) (2021-01-17)
+
+
+### Bug Fixes
+
+* added meta files to all package contents ([616bf26](https://github.com/tuttocodes/GameEventBus/commit/616bf264d866d465148df6c92e58d44ff6dd30a6))
+
 ## [1.0.2](https://github.com/tuttocodes/GameEventBus/compare/v1.0.1...v1.0.2) (2021-01-17)
 
 
