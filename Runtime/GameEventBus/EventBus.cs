@@ -9,15 +9,19 @@ namespace TC.GameEventBus
     /// <summary>
     /// Implements <see cref="IEventBus"/>.
     /// </summary>
-    public class EventBus<EventClass> : IEventBus<EventClass>
-    {
-        private readonly Dictionary<Type, List<ISubscription<EventClass>>> _subscriptions;
+    public class EventBus<EventBase> : IEventBus<EventBase>
+    {   
+        /// <summary>
+        /// List of subscribed actions for any given event type.
+        /// </summary>
+        private readonly Dictionary<Type, object> subscriptions;
+
         private readonly Dictionary<object, Type> typeMap; 
         private static readonly object SubscriptionsLock = new object();
 
         public EventBus()
         {
-            _subscriptions = new Dictionary<Type, List<ISubscription<EventClass>>>();
+            subscriptions = new Dictionary<Type, object>();
             typeMap = new Dictionary<object, Type>();
         }
 
@@ -27,18 +31,19 @@ namespace TC.GameEventBus
         /// <typeparam name="TEventBase">The type of event</typeparam>
         /// <param name="action">The Action to invoke when an event of this type is published</param>
         /// <returns>A <see cref="SubscriptionToken"/> to be used when calling <see cref="Unsubscribe"/></returns>
-        public void Subscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventClass
+        public void Subscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventBase
         {
             if (action == null)
                 throw new ArgumentNullException("action");
 
             lock (SubscriptionsLock)
             {
-                if (!_subscriptions.ContainsKey(typeof(TEventBase)))
-                    _subscriptions.Add(typeof(TEventBase), new List<ISubscription<EventClass>>());
+                Type eventType = typeof(TEventBase);
+                if (!subscriptions.ContainsKey(eventType))
+                    subscriptions.Add(eventType, new List<Action<EventBase>>());
 
-                typeMap.Add(action, typeof(TEventBase));
-                _subscriptions[typeof(TEventBase)].Add(new Subscription<TEventBase>(action));
+                List<Action<TEventBase>> typeSubscriptions = (List<Action<TEventBase>>) subscriptions[typeof(TEventBase)];
+                typeSubscriptions.Add(action);
             }
         }
 
@@ -46,20 +51,17 @@ namespace TC.GameEventBus
         /// Unsubscribe from the Event type related to the specified <see cref="SubscriptionToken"/>
         /// </summary>
         /// <param name="token">The <see cref="SubscriptionToken"/> received from calling the Subscribe method</param>
-        public void Unsubscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventClass
+        public void Unsubscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventBase
         {
             if (action == null)
                 throw new ArgumentNullException("action");
 
             lock (SubscriptionsLock)
             {
-                Type type = typeMap[action];
-                if (_subscriptions.ContainsKey(type))
-                {
-                    var allSubscriptions = _subscriptions[type];
-                    var subscriptionToRemove = allSubscriptions.FirstOrDefault(x => x.SubscriptionToken == action);
-                    if (subscriptionToRemove != null)
-                        _subscriptions[type].Remove(subscriptionToRemove);
+                if (subscriptions.ContainsKey(typeof(TEventBase)))
+                {   
+                    List<Action<TEventBase>> typeSubscriptions = (List<Action<TEventBase>>) subscriptions[typeof(TEventBase)];
+                    typeSubscriptions.Remove(action);
                 }
             }
         }
@@ -68,30 +70,33 @@ namespace TC.GameEventBus
         /// Publishes the specified event to any subscribers for the <see cref="TEventBase"/> event type
         /// </summary>
         /// <typeparam name="TEventBase">The type of event</typeparam>
-        /// <param name="eventItem">Event to publish</param>
-        public void Publish<TEventBase>(TEventBase eventItem) where TEventBase : EventClass
+        /// <param name="eventArgs">Event to publish</param>
+        public void Publish<TEventBase>(TEventBase eventArgs) where TEventBase : EventBase
         {
-            if (eventItem == null)
-                throw new ArgumentNullException("eventItem");
+            if (eventArgs == null)
+                throw new ArgumentNullException("eventArgs");
 
-            List<ISubscription<EventClass>> allSubscriptions = new List<ISubscription<EventClass>>();
             lock (SubscriptionsLock)
             {
-                if (_subscriptions.ContainsKey(typeof(TEventBase)))
-                    allSubscriptions = _subscriptions[typeof(TEventBase)];
+                Type eventType = typeof(TEventBase);
+                if (subscriptions.ContainsKey(eventType))
+                {
+                    List<Action<TEventBase>> typeSubscriptions = (List<Action<TEventBase>>) subscriptions[eventType];
+                    foreach (var subscription in typeSubscriptions)
+                    {
+                        try
+                        {
+                            subscription(eventArgs);
+                        }
+                        catch (Exception exception)
+                        {
+                            // TODO: Log exception
+                        }
+                    }
+                }
             }
 
-            foreach (var subscription in allSubscriptions)
-            {
-                try
-                {
-                    subscription.Publish(eventItem);
-                }
-                catch (Exception exception)
-                {
-
-                }
-            }
+            
         }
     }
 }
