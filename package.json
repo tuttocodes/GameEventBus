@@ -15,10 +15,10 @@
   },
   "private": true,
   "files": [
-    "./Editor",
-    "./Runtime",
-    "./Documentation~",
-    "./Samples~",
+    "Editor/*",
+    "Runtime/*",
+    "Documentation~/*",
+    "Samples~/*",
     "README.md",
     "CHANGELOG.md",
     "packages.json"
@@ -29,9 +29,6 @@
     "@commitlint/config-conventional": "11.0.0",
     "cz-conventional-changelog": "3.2.0",
     "husky": "4.3.8"
-  },
-  "optionalDependencies": {
-    "commitizen": "4.2.3"
   },
   "husky": {
     "hooks": {
