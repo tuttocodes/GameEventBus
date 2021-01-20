@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/tuttocodes/Package-GameEventBus/compare/v1.0.3...v1.1.0) (2021-01-20)
+
+
+### Features
+
+* removed subscriptions class, simplified and use only actions ([a67f68d](https://github.com/tuttocodes/Package-GameEventBus/commit/a67f68df73d9e2d436e513fb30a363a184e322b2))
+
 ## [1.0.3](https://github.com/tuttocodes/GameEventBus/compare/v1.0.2...v1.0.3) (2021-01-17)
 
 
