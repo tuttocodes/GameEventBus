@@ -14,7 +14,7 @@ namespace TC.GameEventBus.Interfaces
         void Subscribe<TEventBase>(Action<TEventBase> action) where TEventBase : EventBase;
 
         /// <summary>
-        /// Unsubscribe the action from the event type/>
+        /// Unsubscribe the action from the event type.
         /// </summary>
         /// /// <typeparam name="TEventBase">The type of event</typeparam>
         /// <param name="action">The action we want to unsubscribe.</param>
